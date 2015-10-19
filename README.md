@@ -29,7 +29,7 @@ Funktioner för att beräkna den totala effektutvecklingen i en krets med en sp�
 
 #### Bibliotek 3, libcomponent.so
 Funktion som beräknar vilka tre seriekopplade resistorer i E12-serien som närmast ersätter den
-resistans som skickastill funktionen.
+resistans som skickas till funktionen.
 
 
 #### Exempel på huvudprogram
@@ -88,3 +88,7 @@ Copyright (c) 2015 Group 113 at UMU linUM HT 2015
 http://www.resistorguide.com/resistor-values/
 
 http://www.thegeekstuff.com/2011/12/c-arrays/
+
+http://randu.org/tutorials/c/libraries.php
+
+http://www.cs.swarthmore.edu/~newhall/unixhelp/howto_C_libraries.html
