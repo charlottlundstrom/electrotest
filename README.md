@@ -45,6 +45,11 @@ Ersättningsresistans: 1398 ohm
 Effekt: 1.78 W
 Ersättningsresistanser i E12-serien kopplade i serie: 1200, 180, 18
 
+E12 - series resistor values. Scale this by powers of 10.
+10 	12 	15 	18 	22 	27
+33 	39 	47 	56 	68 	82
+
+Basically each subsequent resistor has 1.21 times greater resistance than the last.
 
 
 ### Installation
@@ -80,3 +85,6 @@ Copyright (c) 2015 Group 113 at UMU linUM HT 2015
 
 ### Sources, inspiration and notes
 
+http://www.resistorguide.com/resistor-values/
+
+http://www.thegeekstuff.com/2011/12/c-arrays/
