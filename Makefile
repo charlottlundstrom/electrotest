@@ -26,28 +26,43 @@ CFLAGS = -Wall
 all: electrotest
 
 electrotest: main.o
-	cp main.o electrotest;
 
-main.o:
-# Use the -c option to gcc to tell it just to create an object file (an .o file) rather than an executable:
-# To create a .so (shared object) file use the -shared flag to gcc.
-# The -L. piece tells gcc to look in the current directory in addition to the other library directories for finding libmylib.a.
-# The compiler option -lNAME will attempt to link object files with a library file ‘libNAME.a’ i
-# To link with a library not in the standard (usr/lib) path: -L/home/myUserName/lib -lmylib
-# -I adds include directory of header files. 
+# Add dependencies for the other tests when they are ready.
+libtests: libresistance_test
 
-	$(CC) $(CFLAGS) -o libcomponent.o -c libcomponent.c;
-	$(CC) $(CFLAGS) -shared -o libcomponent.so  libcomponent.o -lm;
+main.o: libresistance.so libpower.so libcomponent.so
 
-	$(CC) $(CFLAGS) -o libpower.o -c libpower.c;
-	$(CC) $(CFLAGS) -shared -o libpower.so  libpower.o -lm;
 
-	$(CC) $(CFLAGS) -o libresistance.o -c libresistance.c;
-	$(CC) $(CFLAGS) -shared -o libresistance.so  libresistance.o -lm;
+### LIBRESISTANCE
+libresistance_test: libresistance.so
+	$(CC) $(CFLAGS) libresistance_test.c -L. -lresistance -o libresistance_test;
 
-	$(CC) $(CFLAGS) main.c -L. -lcomponent -lresistance -lpower -o main.o;
-# Using -I flag .h files can be in another directory (src in this case).
-# $(CC) $(CFLAGS) -Isrc/ main.c -L. -lcomponent -lresistance -lpower -o main.o;
+libresistance.so: libresistance.o
+	ld -shared -soname libresistance.so -o libresistance.so -lc libresistance.o;
+
+libresistance.o: libresistance.c
+
+
+### LIBPOWER
+libpower_test: libpower.so
+	$(CC) $(CFLAGS) libpower_test.c -L. -lresistance -o libpower_test;
+
+libpower.so: libpower.o
+	ld -shared -soname libpower.so -o libpower.so -lc libpower.o;
+
+libpower.o: libpower.c
+
+
+### LIBCOMPONENT
+libcomponent_test: libcomponent.so
+	$(CC) $(CFLAGS) libcomponent_test.c -L. -lresistance -o libcomponent_test;
+
+libcomponent.so: libcomponent.o
+	ld -shared -soname libcomponent.so -o libcomponent.so -lc libcomponent.o;
+
+libcomponent.o: libcomponent.c
+
+
 
 # For creating archives of several .c files (not needed for a small project like this)
 libcomponent.a:
@@ -70,7 +85,10 @@ clean:
 	libcomponent.so \
 	libresistance.o \
 	libpower.o \
-	libcomponent.o;
+	libcomponent.o \
+	libresistance_test \
+	libpower_test \
+	libcomponent_test;
 
 #install: program1
 #	@if [ -d $(INSTDIR) ]; \
@@ -90,14 +108,22 @@ clean:
 # "install" för att kopiera körbar fil till en lämplig katalog varifrån filen är enkelt körbar för en vanlig användare via anropet program1. Vilka kataloger är lämpliga på just ditt system och hur ser man det?  Miljövariabeln PATH är en ledtråd. 
 # "uninstall" för att ta bort det som gjordes av "install" 
 
+# GCC options and examples:
+# Use the -c option to gcc to tell it just to create an object file (an .o file) rather than an executable:
+# To create a .so (shared object) file use the -shared flag to gcc.
+# The -L. piece tells gcc to look in the current directory in addition to the other library directories for finding libmylib.a.
+# The compiler option -lNAME will attempt to link object files with a library file ‘libNAME.a’ i
+# To link with a library not in the standard (usr/lib) path: -L/home/myUserName/lib -lmylib
+# -I adds include directory of header files. Using -I flag .h files can be in another directory.
+# $(CC) $(CFLAGS) -o libcomponent.o -c libcomponent.c;
+# $(CC) $(CFLAGS) -shared -o libcomponent.so  libcomponent.o -lm;
+# $(CC) $(CFLAGS) main.c -L. -lcomponent -lresistance -lpower -o main.o;
 
-
-# Special macros:
+# Special macros and options for makefiles:
 #$? List of prerequisites (files the target depends on) changed more recently than the current target
 #$@ Name of the current target
 #$< Name of the current prerequisite
 #$* Name of the current prerequisite, without any suffix
-
 
 #- tells make to ignore any errors. For example, if you wanted to make a directory but wished to
 # ignore any errors, perhaps because the directory might already exist, you just precede mkdir

@@ -62,12 +62,22 @@ Use the included Makefile:
 
 make clean; make; ./electrotest
 
+The library tests can be run by building "make libtests". The resulting libLIBNAME_test executable should return a value other than -1 if successful.
+
+Check the dependencies of any executable with the command: ldd ./executableName
+
+On Ubuntu system the shared object files (.so) of the three libraries seem to only work if copying to usr/lib with root privilige. 
+
+Manually setting LD_LIBRARY_PATH to the working dir of electrotest seems to not work in Ubuntu, the dynamic shared libraries are not found. I think this is a security feature of Ubuntu. Maybe we just have to live with using sudo for this.
+[LinuxForums](http://www.linuxforums.org/forum/ubuntu-linux/176983-solved-cannot-set-ld_library_path-profile-etc-profile.html)
+
 
 
 ### Bugs, known Issues and missing Features
 
 * Make file does not handle the libraries properly. Use make clean; make; ./electrotest to run program after changes have been made to any files.
 * Move library header .h files to sub-directory. Use -I flag in compiler,
+* .so (shared object) files are not found when in the application directory. Even if the LD_LIBRARY_PATH variable is set in the shell the library will not be found by the executable. The solution seems to be to cp to /usr/lib/ with root priviledges (may be an Ubuntu specific problem).
 
 
 
