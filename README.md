@@ -39,14 +39,23 @@ resistans som skickas till funktionen.
 #### Exempel på huvudprogram
 
 %./electrotest
+
 Ange spänningskälla i V: 50
+
 Ange koppling[S | P]: S
+
 Antal komponenter: 3
+
 Komponent 1 i ohm: 300
+
 Komponent 2 i ohm: 500
+
 Komponent 3 i ohm: 598
+
 Ersättningsresistans: 1398 ohm
+
 Effekt: 1.78 W
+
 Ersättningsresistanser i E12-serien kopplade i serie: 1200, 180, 18
 
 E12 - series resistor values. Scale this by powers of 10.
@@ -66,12 +75,14 @@ The library tests can be run by building "make libtests". The resulting libLIBNA
 
 Check the dependencies of any executable with the command: ldd ./executableName
 
-On Ubuntu system the shared object files (.so) of the three libraries seem to only work if copying to usr/lib with root privilige. 
+On Ubuntu system the shared object files (.so) of the three libraries seem to only work if copying to usr/lib with root privilige.  
 
 Manually setting LD_LIBRARY_PATH to the working dir of electrotest seems to not work in Ubuntu, the dynamic shared libraries are not found. I think this is a security feature of Ubuntu. Maybe we just have to live with using sudo for this.
+[Using LD_LIBRARY_PATH](http://wiredrevolution.com/system-administration/how-to-correctly-use-ld_library_path)
 [LinuxForums](http://www.linuxforums.org/forum/ubuntu-linux/176983-solved-cannot-set-ld_library_path-profile-etc-profile.html)
 
-
+The solution is here [cusom library paths](http://www.cyberciti.biz/faq/linux-setting-changing-library-path/)
+Basically add a custom .conf file i.e: /etc/ld.so.conf.d/myapp.conf and include the full path to the directory where the shared objects reside. You'll need root privileges to write to the .conf file. Once that is done reload the linking by entering ldconfig on the command line, again root privileges are required. Now the executable should find the shared object files.
 
 ### Bugs, known Issues and missing Features
 
