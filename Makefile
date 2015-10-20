@@ -46,7 +46,8 @@ main.o:
 	$(CC) $(CFLAGS) -shared -o libresistance.so  libresistance.o -lm;
 
 	$(CC) $(CFLAGS) main.c -L. -lcomponent -lresistance -lpower -o main.o;
-	# $(CC) $(CFLAGS) -Isrc/ main.c -L. -lcomponent -lresistance -lpower -o main.o; // Using -I flag .h files can be in another directory (src in this case).
+# Using -I flag .h files can be in another directory (src in this case).
+# $(CC) $(CFLAGS) -Isrc/ main.c -L. -lcomponent -lresistance -lpower -o main.o;
 
 # For creating archives of several .c files (not needed for a small project like this)
 libcomponent.a:

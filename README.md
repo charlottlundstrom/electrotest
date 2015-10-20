@@ -66,7 +66,8 @@ make clean; make; ./electrotest
 
 ### Bugs, known Issues and missing Features
 
-Make file does not handle the libraries properly. Use make clean; make; ./electrotest to run program after changes have been made to any files.
+* Make file does not handle the libraries properly. Use make clean; make; ./electrotest to run program after changes have been made to any files.
+* Move library header .h files to sub-directory. Use -I flag in compiler,
 
 
 
@@ -97,6 +98,8 @@ Copyright (c) 2015 Group 113 at UMU linUM HT 2015
 
 
 ### Sources, inspiration and notes
+
+http://www.rapidtables.com/code/linux/gcc/gcc-i.htm
 
 http://www.resistorguide.com/resistor-values/
 
