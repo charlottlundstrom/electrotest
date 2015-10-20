@@ -6,6 +6,10 @@
 #include "libresistance.h"
 
 void main() {
+    /* 
+    Just nu så genererar main en lista på resistor-värden i E12 serien. 
+    Detta kanske bör kopieras och flyttas till libcomponent.c
+    */
     
     int resistor_count = 25; // resistor values between 10 and 1000 ohm.
     // int resistor_count = 61; // resistor values between 10 and 1000000 (1M) ohm.
@@ -29,15 +33,13 @@ void main() {
 
     }
 
-    printf("E12 resistor values: ");
+    printf("E12 resistor values : ");
     for (i = 0; i < resistor_count; i++)
         printf("%d, ", resistor_values[i]);
     printf("\nEnd.");
 
     // int sum = add(1, 5);
     // printf("%d", sum);
-
-    //return (0);
 
 }
 

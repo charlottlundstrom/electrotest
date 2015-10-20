@@ -1,13 +1,16 @@
 Electrotest linUM_06_projekt
 
 
+
 ### Versions
 v0.0.1 (current)
 
 (Note to author: version specified in readme.md, changelog.md, and in commit tag.)
 
 
+
 ### Requirements
+
 
 
 ### Overview
@@ -32,6 +35,7 @@ Funktion som beräknar vilka tre seriekopplade resistorer i E12-serien som närm
 resistans som skickas till funktionen.
 
 
+
 #### Exempel på huvudprogram
 
 %./electrotest
@@ -52,11 +56,18 @@ E12 - series resistor values. Scale this by powers of 10.
 Basically each subsequent resistor has 1.21 times greater resistance than the last.
 
 
-### Installation
-Use the included Makefile,.
+
+### Installation & Running
+Use the included Makefile:
+
+make clean; make; ./electrotest
 
 
-### Bugs, known Issues and missing Features:
+
+### Bugs, known Issues and missing Features
+
+Make file does not handle the libraries properly. Use make clean; make; ./electrotest to run program after changes have been made to any files.
+
 
 
 ### Contributing
@@ -77,10 +88,12 @@ The best way to get your changes merged is as follows:
 6. Send a pull request to [weleoka/electrotest](https://github.com/weleoka/electrotest)
 
 
+
 ### Licence
 The MIT License (MIT)
 
 Copyright (c) 2015 Group 113 at UMU linUM HT 2015
+
 
 
 ### Sources, inspiration and notes

@@ -1,6 +1,10 @@
 #ifndef _LIBPOWER_H_
 #define _LIBPOWER_H_
 
+    // Library header example from:
+    // http://www.cs.swarthmore.edu/~newhall/unixhelp/howto_C_libraries.html
+
+
     // a constant definition exported by library:
     //#define MAX_FOO2  20
 
@@ -18,6 +22,8 @@
     // extern int total_foo2; 	
 
     // a function prototype for a function exported by library:
-    extern int foo2(float y, float z);   // a very bad function name
+    float calc_power_r(float volt, float resistance);
+    float calc_power_i(float volt, float current);
+
 
 #endif

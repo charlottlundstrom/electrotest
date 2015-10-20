@@ -1,3 +1,8 @@
+# Make file does not handle the libraries properly yet.
+# Use:
+# make clean; make; ./electrotest
+# to run program after changes have been made to any files.
+
 # Which compiler
 CC = gcc
 
@@ -11,32 +16,36 @@ MYLIB = component
 # INCLUDE = .
 
 # Options for development
-CFLAGS = -g -Wall
+# CFLAGS = -g -Wall
+CFLAGS = -Wall
 # Options for release
 # CFLAGS = -O -Wall –ansi
 
 
 all: electrotest
 
-# The -L. piece tells gcc to look in the current directory in addition to the other library directories for finding libmylib.a.
-# The compiler option -lNAME will attempt to link object files with a library file ‘libNAME.a’ i
 electrotest: main.o
-	$(CC) $(CFLAGS) main.o -o electrotest;
+	cp main.o electrotest;
+
 
 main.o:
 # Use the -c option to gcc to tell it just to create an object file (an .o file) rather than an executable:
 # To create a .so file use the -shared flag to gcc (it will copy the lib to usr/lib).
+# The -L. piece tells gcc to look in the current directory in addition to the other library directories for finding libmylib.a.
+# The compiler option -lNAME will attempt to link object files with a library file ‘libNAME.a’ i
 # To link with a library not in the standard (usr/lib) path: -L/home/myUserName/lib -lmylib
-	$(CC) -o libcomponent.o -c libcomponent.c;
-	$(CC) -shared -o libcomponent.so  libcomponent.o -lm;
+	$(CC) $(CFLAGS) -o libcomponent.o -c libcomponent.c;
+	$(CC) $(CFLAGS) -shared -o libcomponent.so  libcomponent.o -lm;
 
-	$(CC) -o libpower.o -c libpower.c;
-	$(CC) -shared -o libpower.so  libpower.o -lm;
+	$(CC) $(CFLAGS) -o libpower.o -c libpower.c;
+	$(CC) $(CFLAGS) -shared -o libpower.so  libpower.o -lm;
 
-	$(CC) -o libresistance.o -c libresistance.c;
-	$(CC) -shared -o libresistance.so  libresistance.o -lm;
-	$(CC) main.c -L. -lcomponent -lresistance -lpower -omain.o;
+	$(CC) $(CFLAGS) -o libresistance.o -c libresistance.c;
+	$(CC) $(CFLAGS) -shared -o libresistance.so  libresistance.o -lm;
 
+	$(CC) $(CFLAGS) main.c -L. -lcomponent -lresistance -lpower -o main.o;
+
+# For creating archives of several .c files (not needed for a small project like this)
 libcomponent.a:
 	ar rc libcomponent.a libcomponent.c;
 
@@ -59,16 +68,16 @@ clean:
 	libpower.o \
 	libcomponent.o;
 
-install: program1
-	@if [ -d $(INSTDIR) ]; \
-		then \
-		cp program1 $(INSTDIR);\
-		chmod a+x $(INSTDIR)/program1;\
-		chmod og-w $(INSTDIR)/program1;\
-		echo “Installed program1 in $(INSTDIR)“;\
-	else \
-		echo “Sorry, $(INSTDIR) does not exist”;\
-	fi
+#install: program1
+#	@if [ -d $(INSTDIR) ]; \
+#		then \
+#		cp program1 $(INSTDIR);\
+#		chmod a+x $(INSTDIR)/program1;\
+#		chmod og-w $(INSTDIR)/program1;\
+#		echo “Installed program1 in $(INSTDIR)“;\
+#	else \
+#		echo “Sorry, $(INSTDIR) does not exist”;\
+#	fi
 
 # uninstall:
 
