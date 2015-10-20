@@ -16,6 +16,7 @@ MYLIB = component
 # INCLUDE = .
 
 # Options for development
+# -Wall enables all compiler's warning messages.
 # CFLAGS = -g -Wall
 CFLAGS = -Wall
 # Options for release
@@ -27,13 +28,14 @@ all: electrotest
 electrotest: main.o
 	cp main.o electrotest;
 
-
 main.o:
 # Use the -c option to gcc to tell it just to create an object file (an .o file) rather than an executable:
-# To create a .so file use the -shared flag to gcc (it will copy the lib to usr/lib).
+# To create a .so (shared object) file use the -shared flag to gcc.
 # The -L. piece tells gcc to look in the current directory in addition to the other library directories for finding libmylib.a.
 # The compiler option -lNAME will attempt to link object files with a library file ‘libNAME.a’ i
 # To link with a library not in the standard (usr/lib) path: -L/home/myUserName/lib -lmylib
+# -I adds include directory of header files. 
+
 	$(CC) $(CFLAGS) -o libcomponent.o -c libcomponent.c;
 	$(CC) $(CFLAGS) -shared -o libcomponent.so  libcomponent.o -lm;
 
@@ -44,6 +46,7 @@ main.o:
 	$(CC) $(CFLAGS) -shared -o libresistance.so  libresistance.o -lm;
 
 	$(CC) $(CFLAGS) main.c -L. -lcomponent -lresistance -lpower -o main.o;
+	# $(CC) $(CFLAGS) -Isrc/ main.c -L. -lcomponent -lresistance -lpower -o main.o; // Using -I flag .h files can be in another directory (src in this case).
 
 # For creating archives of several .c files (not needed for a small project like this)
 libcomponent.a:
