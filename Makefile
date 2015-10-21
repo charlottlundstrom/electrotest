@@ -10,7 +10,7 @@ CC = gcc
 INSTDIR = /usr/local/bin
 
 # Local Libraries
-MYLIB = component
+# MYLIB = component
 
 # Where are include files kept
 # INCLUDE = .
@@ -25,70 +25,60 @@ CFLAGS = -Wall
 
 all: electrotest
 
-electrotest: main.o
-
-# Add dependencies for the other tests when they are ready.
+# Developers: add dependencies for the other tests when they are ready.
 libtests: libresistance_test
 
-main.o: libresistance.so libpower.so libcomponent.so
+electrotest: libresistance.so libpower.so libcomponent.so
+	$(CC) $(CFLAGS) main.c -o electrotest
 
 
 ### LIBRESISTANCE
 libresistance_test: libresistance.so
-	$(CC) $(CFLAGS) libresistance_test.c -L. -lresistance -o libresistance_test;
+	$(CC) $(CFLAGS) libresistance_test.c -L. -lresistance -o libresistance_test
 
 libresistance.so: libresistance.o
-	ld -shared -soname libresistance.so -o libresistance.so -lc libresistance.o;
+	ld -shared -soname libresistance.so -o libresistance.so -lc libresistance.o
 
 libresistance.o: libresistance.c
 
 
 ### LIBPOWER
 libpower_test: libpower.so
-	$(CC) $(CFLAGS) libpower_test.c -L. -lresistance -o libpower_test;
+	$(CC) $(CFLAGS) libpower_test.c -L. -lresistance -o libpower_test
 
 libpower.so: libpower.o
-	ld -shared -soname libpower.so -o libpower.so -lc libpower.o;
+	ld -shared -soname libpower.so -o libpower.so -lc libpower.o
 
 libpower.o: libpower.c
 
 
 ### LIBCOMPONENT
 libcomponent_test: libcomponent.so
-	$(CC) $(CFLAGS) libcomponent_test.c -L. -lresistance -o libcomponent_test;
+	$(CC) $(CFLAGS) libcomponent_test.c -L. -lresistance -o libcomponent_test
 
 libcomponent.so: libcomponent.o
-	ld -shared -soname libcomponent.so -o libcomponent.so -lc libcomponent.o;
+	ld -shared -soname libcomponent.so -o libcomponent.so -lc libcomponent.o
 
 libcomponent.o: libcomponent.c
 
 
-
 # For creating archives of several .c files (not needed for a small project like this)
 libcomponent.a:
-	ar rc libcomponent.a libcomponent.c;
+	ar rc libcomponent.a libcomponent.c
 
 libpower.a:
-	ar rc libpower.a libpower.c;
+	ar rc libpower.a libpower.c
 
 libresistance.a:
-	ar rc libresistance.a libresistance.c;
+	ar rc libresistance.a libresistance.c
+
 
 clean:
 	-rm electrotest \
-	main.o \
-	libresistance.a \
-	libpower.a \
-	libcomponent.a \
-	libresistance.so \
-	libpower.so \
-	libcomponent.so \
-	libresistance.o \
-	libpower.o \
-	libcomponent.o \
-	libresistance_test \
-	libpower_test \
-	libcomponent_test;
+	*o \
+	*a \
+	*so \
+	*_test
 
 #install: program1
 #	@if [ -d $(INSTDIR) ]; \
