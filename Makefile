@@ -33,7 +33,7 @@ electrotest: libresistance.so libpower.so libcomponent.so
 
 
 ### LIBRESISTANCE
-libresistance_test: libresistance.so
+libresistance_test: libresistance.c libresistance.so
 	$(CC) $(CFLAGS) libresistance_test.c -L. -lresistance -o libresistance_test
 
 libresistance.so: libresistance.o

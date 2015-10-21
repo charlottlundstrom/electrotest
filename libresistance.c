@@ -9,14 +9,14 @@ float calc_resistance(int count, char conn, float *array) {
 
         case 'S': 
             for (i = 0; i < count; i++) {
-                resistance =+ array[i];
+                resistance = resistance + array[i];
             }
 
             break;
 
         case 'P':
             for (i = 0; i < count; i++) {
-                resistance =+ array[i];
+                resistance = resistance + array[i];
             }
             resistance = resistance / count;
 

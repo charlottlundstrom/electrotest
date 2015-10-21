@@ -2,9 +2,9 @@
 #include "libresistance.h"
 
 void main() {
-    int count = 4;
-    char conn = 'S';
-    float array[] = {25, 35, 70, 50};
+    int count = 3;
+    char conn = 'P';
+    float array[] = {25, 35, 70};
 
     int resistance = calc_resistance(count, conn, array);
 
