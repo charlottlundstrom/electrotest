@@ -44,7 +44,7 @@ libresistance.o: libresistance.c
 
 ### LIBPOWER
 libpower_test: libpower.so
-	$(CC) $(CFLAGS) libpower_test.c -L. -lresistance -o libpower_test
+	$(CC) $(CFLAGS) libpower_test.c -L. -lpower -o libpower_test
 
 libpower.so: libpower.o
 	ld -shared -soname libpower.so -o libpower.so -lc libpower.o
@@ -54,7 +54,7 @@ libpower.o: libpower.c
 
 ### LIBCOMPONENT
 libcomponent_test: libcomponent.so
-	$(CC) $(CFLAGS) libcomponent_test.c -L. -lresistance -o libcomponent_test
+	$(CC) $(CFLAGS) libcomponent_test.c -L. -lcomponent -o libcomponent_test
 
 libcomponent.so: libcomponent.o
 	ld -shared -soname libcomponent.so -o libcomponent.so -lc libcomponent.o
