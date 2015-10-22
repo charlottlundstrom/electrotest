@@ -90,16 +90,18 @@ clean:
 	libpower_test \
 	libcomponent_test;
 
-#install: program1
+##INSTALL
+#install: electrotest
 #	@if [ -d $(INSTDIR) ]; \
 #		then \
 #		cp program1 $(INSTDIR);\
-#		chmod a+x $(INSTDIR)/program1;\
-#		chmod og-w $(INSTDIR)/program1;\
-#		echo “Installed program1 in $(INSTDIR)“;\
+#		chmod a+x $(INSTDIR)/electrotest;\
+#		chmod og-w $(INSTDIR)/electrotest;\
+#		echo “Installed electrotest in $(INSTDIR)“;\
 #	else \
 #		echo “Sorry, $(INSTDIR) does not exist”;\
 #	fi
+
 
 # uninstall:
 
