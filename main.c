@@ -19,7 +19,33 @@ void main() {
     int i = 0;
     int j = 12;
 
+// Detta är förslag till main, tänkt som ett upplägg att arbeta utifrån
     printf("Electrotest 2015 - linUM at UMU\n");
+    printf("Ange spänningskälla: ");
+    //scanna %f, &variabelNamn
+    printf("Ange koppling [S|P]: ");
+    //scanna %c, &variabelNamn
+    printf("Ange antal komponenter: ");
+    //scanna %d, &variabelNamn
+    
+    // loop som endast visar de komponenter som behövs
+    printf("Ange Ohm för komponent 1: ");
+    //scanna och spara
+    printf("Ange Ohm för komponent 2: ");
+    //scanna och spara
+    printf("Ange Ohm för komponent 3: ");
+    //scanna och spara
+    
+    //anropa resistance-funktion
+    printf("Ersättningsresistans: %f Ohm\n", varNamn);
+    
+    //anropa power funktion, skicka med värde från resistance-funktionen
+    printf("Effekt: %f Watt\n", varNamn);
+  
+    //anropa component
+    printf("Ersättningsresistanser i E12-serien kopplade i serie: ");
+    //loopa och skriv ut rätt antal ersättningsresistanser
+//
 
     while (j < resistor_count) {
         
