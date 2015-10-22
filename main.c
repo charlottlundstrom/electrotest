@@ -7,14 +7,11 @@
 #include "libresistance.h"
 
 
-void main() {
+int main() {
 
     int i, component_count;
-    char circuit_type;
-    char *val;
-    char *pointer_s = "s";
-    char *pointer_p = "p";
-    char input[3];
+    char circuit_type = ' '; //declare variable as character
+
 
 // Detta är förslag till main, tänkt som ett upplägg att arbeta utifrån
     printf("Electrotest 2015 - linUM at UMU\n");
@@ -22,28 +19,19 @@ void main() {
     printf("Ange spänningskälla: ");
     //scanna %f, &variabelNamn
 
-/*
+
     // Här följer användar indata för calc_resistance();
     printf("Ange koppling [s|p]: ");
     do {
-        fgets(input, sizeof input, stdin);
-        strtol(input, &val, 10);
-        printf("Du har valt: %s \n", val);  // För felkontroll
-        printf("s: %d\n", strcmp(pointer_s, val));   // För felkontroll
-        printf("p: %d\n", strcmp(pointer_p, val));   // För felkontroll
-    }
-    while (strcmp(pointer_s, val) == 1 && strcmp(pointer_p, val) == 1); // Avsluta loopen om s eller p anges
-
-    if (strcmp(pointer_s, val) == -1 && strcmp(pointer_p, val) == 1){   // s blir valt
-        circuit_type = 's';
-    }
-    else {
-        circuit_type = 'p';
-    }
+        circuit_type = getchar();
+        if (circuit_type != 's' || circuit_type != 'p') {
+            printf("Felval, välj [s|p]: "); // Detta skrivs ut två gånger?! Varför?
+        }
+    } while (circuit_type != 's' && circuit_type != 'p');
 
     printf("Ange antal komponenter: ");
     scanf("%d", &component_count);
-    // Skapa en array av viss storlek.
+    // Skapa en array med storleken component_count.
     float component_array[component_count];
 
     // loop som endast visar de komponenter som behövs   
@@ -53,13 +41,13 @@ void main() {
         scanf("%f", &component_array[i]);
     }
 
-    for (i = 0; i < component_count; i++)
-        printf("Komponent %d: %f ", i + 1, component_array[i]);
+
+
     //anropa resistance-funktion
     float resistance = calc_resistance(component_count, circuit_type, component_array);
     printf("\nErsättningsresistans: %f Ohm\n", resistance);
 
-*/
+
 
     //anropa power funktion, skicka med värde från resistance-funktionen
     //printf("Effekt: %f Watt\n", varNamn);
@@ -99,6 +87,8 @@ void main() {
 
     // int sum = add(1, 5);
     // printf("%d", sum);
+
+    return (1); // För att gcc inte ska klaga på att main inte returnerar int.
 
 }
 

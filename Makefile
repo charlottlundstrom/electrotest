@@ -15,6 +15,8 @@ INSTDIR = /usr/local/bin
 # Where are include files kept
 # INCLUDE =
 
+# All the source files which electrotest depends on.
+FILES = main.c libresistance.so libpower.so libcomponent.so
 # Options for development
 # -Wall enables all compiler's warning messages.
 # CFLAGS = -g -Wall
@@ -28,7 +30,7 @@ all: electrotest
 # Developers: add dependencies for the other tests when they are ready.
 libtests: libresistance_test
 
-electrotest: libresistance.so libpower.so libcomponent.so
+electrotest: $(FILES)
 	$(CC) $(CFLAGS) main.c -L. -lpower -lresistance -lcomponent -o electrotest
 
 
