@@ -7,14 +7,16 @@ float calc_resistance(int count, char conn, float *array) {
 
     switch (conn) {
 
-        case 'S': 
+        case 's':
+            printf("Seriekopplad uträkning.");
             for (i = 0; i < count; i++) {
                 resistance = resistance + array[i];
             }
 
             break;
 
-        case 'P':
+        case 'p':
+            printf("Paralellkopplad uträkning.");
             for (i = 0; i < count; i++) {
                 resistance = resistance + array[i];
             }

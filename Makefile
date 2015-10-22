@@ -10,10 +10,10 @@ CC = gcc
 INSTDIR = /usr/local/bin
 
 # Local Libraries
-# MYLIB = component
+# MYLIB = 
 
 # Where are include files kept
-# INCLUDE = .
+# INCLUDE =
 
 # Options for development
 # -Wall enables all compiler's warning messages.
@@ -29,14 +29,14 @@ all: electrotest
 libtests: libresistance_test
 
 electrotest: libresistance.so libpower.so libcomponent.so
-	$(CC) $(CFLAGS) main.c -o electrotest
+	$(CC) $(CFLAGS) main.c -L. -lpower -lresistance -lcomponent -o electrotest
 
 
 ### LIBRESISTANCE
 libresistance_test: libresistance.c libresistance.so
 	$(CC) $(CFLAGS) libresistance_test.c -L. -lresistance -o libresistance_test
 
-libresistance.so: libresistance.o
+libresistance.so: libresistance.c libresistance.o
 	ld -shared -soname libresistance.so -o libresistance.so -lc libresistance.o
 
 libresistance.o: libresistance.c
