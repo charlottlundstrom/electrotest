@@ -1,0 +1,21 @@
+---DEL2---
+
+Redovisa en beskrivning av hur du länkat in alla 3 bibliotek och använt det i ett huvudprogram enligt ovan. 
+--I Makefilen länkas biblioteken in genom...make lib och make all som fungerar så här...?
+
+--I vår main-fil tas dessa bibiotek in genom att i man längst upp anger #include <stdlib.h> som inkluderar bibiotekets header-fil. Headerfilen i sin tur inkluderar de 3 bibliotekens headerfiler som inkluderar funktionerna som används i programmet.(Är det rätt?) 
+(Måste även dessa inkluderas? #include "libcomponent.h", #include "libpower.h", #include "libresistance.h"????)
+
+Beskriv också vilka du jobbat med:
+--Är det vilka bibliotek vi arbetat med?
+
+Kommandon och options för att kompilera biblioteken:
+--gcc
+--make lib
+
+Hur bibloteken används i huvudprogrammet:
+--Bibliotek 1 används i huvudprogrammet till att räkna ut den totala resistansen för serie och paralellkopplade resistanser som den sedan returnerar till huvudprogrammet. Bibliotek 2 används för att  räkna ut den totala effekten med hjälp av spänning och ström eller spänning och motstånd när en resistans är kopplad i serie. Bibliotek 3 innehåller en fuktion som används i huvudprogrammet för att beräkna vilka 3 seriekopplade resistorer som kan ersätta den som användaren angett.
+
+
+
+
