@@ -10,14 +10,15 @@
 int main() {
 
     int i, component_count;
+    float effekt, volt;
     char circuit_type = ' '; //declare variable as character
 
 
 // Detta är förslag till main, tänkt som ett upplägg att arbeta utifrån
     printf("Electrotest 2015 - linUM at UMU\n");
     
-    printf("Ange spänningskälla: ");
-    //scanna %f, &variabelNamn
+    printf("Ange spänningskälla (V): ");
+    scanf("%f", &volt);
 
 
     // Här följer användar indata för calc_resistance();
@@ -50,7 +51,8 @@ int main() {
 
 
     //anropa power funktion, skicka med värde från resistance-funktionen
-    //printf("Effekt: %f Watt\n", varNamn);
+    effekt = calc_power_r(volt, resistance);
+    printf("Effekten är: %f Watt\n", effekt);
   
     //anropa component
     printf("Ersättningsresistanser i E12-serien kopplade i serie: ");
