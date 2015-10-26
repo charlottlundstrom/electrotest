@@ -1,17 +1,35 @@
 ---DEL2---
 
-Redovisa en beskrivning av hur du länkat in alla 3 bibliotek och använt det i ett huvudprogram enligt ovan. 
---I Makefilen länkas biblioteken in genom...make lib och make all som fungerar så här...?
-
---I vår main-fil tas dessa bibiotek in genom att i man längst upp anger #include <stdlib.h> som inkluderar bibiotekets header-fil. Headerfilen i sin tur inkluderar de 3 bibliotekens headerfiler som inkluderar funktionerna som används i programmet.(Är det rätt?) 
-(Måste även dessa inkluderas? #include "libcomponent.h", #include "libpower.h", #include "libresistance.h"????)
-
 Beskriv också vilka du jobbat med:
---Är det vilka bibliotek vi arbetat med?
+--Gruppen består av Kai Weeks, Charlott Lundström och Joalim Stranberg.
 
-Kommandon och options för att kompilera biblioteken:
---gcc
---make lib
+Redovisa en beskrivning av hur du länkat in alla 3 bibliotek och använt det i ett huvudprogram enligt ovan. (dvs. Vilka parametrar gcc använder, både när vi kompilerar biblioteken och kompilera applikationen. Varför. vad gör olika options? )
+
+--Kompilera bibliotek -såhär kanske vi kan göra (----OBS EJ TESTAT, bara på mitt egna projekt!!!)
+$ gcc -fPIC -Wall -ansi -g -c calc_component.c calc_power_r.c libresistance.c
+Här byggs objektfilerna upp utifrån funktionerna.
+
+Nästa steg bygger upp biblioteken, dvs .so-filerna som används i programmet.
+$ gcc -shared -fPIC -o libpower.so  calc_power_r.o
+$ gcc -shared -fPIC -o libcomponent.so  calc_component.o
+$ gcc -shared -fPIC -o libreststance.so  libresistance.o
+
+Kompilera applikation -
+$ gcc -o test main.c -L. -lpower -lcomponent lresistance -Wl,-rpath,.
+I detta steg skapas den exekverbara filen electrotest.
+
+Options/växlar:
+-fPIC 		står för Position Independent Code och innebär att den genererade maskinkoden inte är beroende av att lokaliseras på en specifik adress för att fungera. Detta innebär att biblioteken kan flyttas.
+-Wall		redovisar eventuella felmeddelanden.
+-ansi		val av teckenkodning som GCC ska acceptera
+-g		skapar eventuell felkod i GDB.
+-c		berättar för kompilatorn att montera och kompilera men INTE länka objektfilerna.
+-shared		producerar ett delat objekt som sedan kan kopplas till andra objekt för att bilda en körbar fil.
+-o		används för att namnge GCCs output, dvs namnet på det körbara programmet.
+-L.		anger sökvägen där GCC ska hitta biblioteket.
+-Wl,-rpath 	anger rpath som växel till länkaren. Om växeln innehåller komman så delas det upp i flera växlar. rpath står för Run Time Search Path och används för att hitta det aktuella biblioteket.
+
+Ovan nämnda steg i GCC kan också genomföras med make genom all och lib. All skapar den exekverbara filen electrotest. Kommandot lib skapar applikationens olika bibliotek.
 
 Hur bibloteken används i huvudprogrammet:
 --Bibliotek 1 används i huvudprogrammet till att räkna ut den totala resistansen för serie och paralellkopplade resistanser som den sedan returnerar till huvudprogrammet. Bibliotek 2 används för att  räkna ut den totala effekten med hjälp av spänning och ström eller spänning och motstånd när en resistans är kopplad i serie. Bibliotek 3 innehåller en fuktion som används i huvudprogrammet för att beräkna vilka 3 seriekopplade resistorer som kan ersätta den som användaren angett.
