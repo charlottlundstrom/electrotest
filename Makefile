@@ -27,6 +27,9 @@ CFLAGS = -Wall
 
 all: electrotest
 
+##LIBRARY
+lib: libresistance libcomponent libpower
+
 # Developers: add dependencies for the other tests when they are ready.
 libtests: libresistance_test libpower_test
 
@@ -95,6 +98,7 @@ install: electrotest
 	else \
 		echo “Sorry, $(INSTDIR) does not exist”;\
 	fi
+
 
 
 # uninstall:
