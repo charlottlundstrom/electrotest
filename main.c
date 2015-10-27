@@ -10,9 +10,8 @@
 int main() {
 
     int component_count;
-  int count, i, antal;
+  int i, antal;
   float totRes;
->>>>>>> upstream/master
     float effekt, volt;
     char circuit_type = ' '; //declare variable as character
 	float resistors[3];
@@ -53,8 +52,6 @@ int main() {
     float resistance = calc_resistance(component_count, circuit_type, component_array);
     printf("\nErsättningsresistans: %f Ohm\n", resistance);
 
-
-
     //anropa power funktion, skicka med värde från resistance-funktionen
     effekt = calc_power_r(volt, resistance);
     printf("Effekten är: %f Watt\n", effekt);
@@ -75,7 +72,6 @@ int main() {
 	}
 	printf("\n");
 /*
-    /* 
     Generera main lista på resistor-värden i E12 serien. 
     */
     // int resistor_count = 25; // resistor values between 10 and 1000 ohm.

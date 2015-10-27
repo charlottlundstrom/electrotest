@@ -29,6 +29,9 @@ Options/växlar:
 -L.		anger sökvägen där GCC ska hitta biblioteket.
 -Wl,-rpath 	anger rpath som växel till länkaren. Om växeln innehåller komman så delas det upp i flera växlar. rpath står för Run Time Search Path och används för att hitta det aktuella biblioteket.
 
+-ld
+-soname
+
 Ovan nämnda steg i GCC kan också genomföras med make genom all och lib. All skapar den exekverbara filen electrotest. Kommandot lib skapar applikationens olika bibliotek.
 
 Hur bibloteken används i huvudprogrammet:

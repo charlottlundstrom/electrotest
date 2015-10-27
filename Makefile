@@ -31,10 +31,10 @@ all: electrotest
 lib: libresistance libcomponent libpower
 
 # Developers: add dependencies for the other tests when they are ready.
-libtests: libresistance_test libpower_test
+libtests: libresistance_test libpower_test component_test
 
 electrotest: $(FILES)
-	$(CC) $(CFLAGS) main.c -L. -lpower -lresistance -lcomponent -o electrotest
+	$(CC) $(CFLAGS) main.c -L. -lpower -lresistance -lcomponent -o electrotest -Wl,-rpath,.
 
 
 ### LIBRESISTANCE
@@ -48,15 +48,15 @@ libresistance.o: libresistance.c
 
 
 ### LIBPOWER
-libpower_test: libpower_r.c libpower_i.c libpower.so
+libpower_test: calc_power_r.c calc_power_i.c libpower.so
 	$(CC) $(CFLAGS) libpower_test.c -L. -lpower -o libpower_test
 
-libpower.so: libpower_r.c libpower_i.c libpower_r.o libpower_i.o
-	ld -shared -soname libpower.so -o libpower.so -lc libpower.o
+libpower.so:  calc_power_r.o calc_power_i.o
+	ld -shared -soname libpower.so -o libpower.so -lc calc_power_r.o calc_power_i.o
 
-libpower_r.o: libpower_r.c
+calc_power_r.o: calc_power_r.c
 
-libpower_i.o: libpower_i.c
+calc_power_i.o: calc_power_i.c
 
 
 ### LIBCOMPONENT
@@ -81,25 +81,34 @@ libresistance.a:
 
 
 clean:
-	-rm electrotest \
+	-rm -f electrotest \
 	*o \
 	*a \
 	*so \
 	*_test
 
-## INSTALL
+## INSTALL use with sudo
 install: electrotest
-	@if [ -d $(INSTDIR) ]; \
+	@if [ -d /usr/local/bin ]; \
 		then \
-		cp program1 $(INSTDIR);\
-		chmod a+x $(INSTDIR)/electrotest;\
-		chmod og-w $(INSTDIR)/electrotest;\
-		echo “Installed electrotest in $(INSTDIR)“;\
+		cp electrotest /usr/local/bin;\
+		chmod a+x /usr/local/bin/electrotest;\
+		chmod og-w /usr/local/bin/electrotest;\
+		echo "Installerad i /usr/local/bin";\
 	else \
-		echo “Sorry, $(INSTDIR) does not exist”;\
+		echo "Sorry, mappen du valde finns inte";\
 	fi
 
-
+#install: electrotest
+#	@if [ -d $(INSTDIR) ]; \
+#		then \
+#		cp program1 $(INSTDIR);\
+#		chmod a+x $(INSTDIR)/electrotest;\
+#		chmod og-w $(INSTDIR)/electrotest;\
+#		echo “Installed electrotest in $(INSTDIR)“;\
+#	else \
+#		echo “Sorry, $(INSTDIR) does not exist”;\
+#	fi
 
 # uninstall:
 
