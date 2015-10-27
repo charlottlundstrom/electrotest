@@ -27,8 +27,11 @@ CFLAGS = -Wall
 
 all: electrotest
 
+##LIBRARY
+lib: libresistance libcomponent libpower
+
 # Developers: add dependencies for the other tests when they are ready.
-libtests: libresistance_test
+libtests: libresistance_test libpower_test
 
 electrotest: $(FILES)
 	$(CC) $(CFLAGS) main.c -L. -lpower -lresistance -lcomponent -o electrotest
@@ -45,13 +48,15 @@ libresistance.o: libresistance.c
 
 
 ### LIBPOWER
-libpower_test: libpower.so
+libpower_test: libpower_r.c libpower_i.c libpower.so
 	$(CC) $(CFLAGS) libpower_test.c -L. -lpower -o libpower_test
 
-libpower.so: libpower.o
+libpower.so: libpower_r.c libpower_i.c libpower_r.o libpower_i.o
 	ld -shared -soname libpower.so -o libpower.so -lc libpower.o
 
-libpower.o: libpower.c
+libpower_r.o: libpower_r.c
+
+libpower_i.o: libpower_i.c
 
 
 ### LIBCOMPONENT
@@ -82,17 +87,18 @@ clean:
 	*so \
 	*_test
 
-##INSTALL
-#install: electrotest
-#	@if [ -d $(INSTDIR) ]; \
-#		then \
-#		cp program1 $(INSTDIR);\
-#		chmod a+x $(INSTDIR)/electrotest;\
-#		chmod og-w $(INSTDIR)/electrotest;\
-#		echo “Installed electrotest in $(INSTDIR)“;\
-#	else \
-#		echo “Sorry, $(INSTDIR) does not exist”;\
-#	fi
+## INSTALL
+install: electrotest
+	@if [ -d $(INSTDIR) ]; \
+		then \
+		cp program1 $(INSTDIR);\
+		chmod a+x $(INSTDIR)/electrotest;\
+		chmod og-w $(INSTDIR)/electrotest;\
+		echo “Installed electrotest in $(INSTDIR)“;\
+	else \
+		echo “Sorry, $(INSTDIR) does not exist”;\
+	fi
+
 
 
 # uninstall:
