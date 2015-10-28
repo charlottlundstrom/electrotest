@@ -24,18 +24,36 @@ int main() {
 
 
     // Här följer användar indata för calc_resistance();
-    printf("Ange koppling [s|p]: ");
-    do {
-        circuit_type = getchar();
-        if (circuit_type != 's' || circuit_type != 'p') {
-            printf("Felval, välj [s|p]: "); // Detta skrivs ut två gånger?! Varför?
+   // printf("Ange koppling [s|p]: ");
+   // do {
+    //    circuit_type = getchar();
+    //    if (circuit_type != 's' || circuit_type != 'p') {
+     //       printf("Felval, välj [s|p]: "); // Detta skrivs ut två gånger?! Varför?
+     //   }
+    //} while (circuit_type != 's' && circuit_type != 'p');
+// Här följer förslag till ändring av koden så att det inte skrivs ut flera ggr
+do {
+  printf("Ange koppling [s|p]: ");
+    scanf("%c", &circuit_type);
+        getchar();
+        switch (circuit_type)
+        {
+                case 's':
+                printf("Du valde s\n");
+                break;
+                case 'p':
+                printf("Du valde p\n");
+                break;
+                default:
+                break;
         }
-    } while (circuit_type != 's' && circuit_type != 'p');
-
+} while (circuit_type!='p' && circuit_type !='s');
     printf("Ange antal komponenter: ");
     scanf("%d", &component_count);
-    // Skapa en array med storleken component_count.
-    float component_array[component_count];
+    // Skapa en array med storleken component_count 
+	// Ändrade till att använda malloc, ska se ut på detta sätt som jag fattat det, finns en free() i slutet av main som 
+	// släpper allokeringen
+	component_array = (float*)  malloc(sizeof(float) * count);
 
     // loop som endast visar de komponenter som behövs   
     for (i = 0; i < component_count; i++)
@@ -101,7 +119,7 @@ int main() {
 
     // int sum = add(1, 5);
     // printf("%d", sum);
-
+	free(component_array);
     return (1); // För att gcc inte ska klaga på att main inte returnerar int.
 
 }
