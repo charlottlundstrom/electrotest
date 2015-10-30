@@ -8,7 +8,7 @@ CC = gcc
 
 # Where to install
 INSTDIR = /usr/local/bin
-
+LIBINSTDIR = /usr/local/lib
 # Local Libraries
 # MYLIB = 
 
@@ -20,7 +20,7 @@ FILES = main.c libresistance.so libpower.so libcomponent.so
 # Options for development
 # -Wall enables all compiler's warning messages.
 # CFLAGS = -g -Wall
-CFLAGS = -Wall
+CFLAGS = -fPIC -Wall
 # Options for release
 # CFLAGS = -O -Wall –ansi
 
@@ -31,10 +31,10 @@ all: electrotest
 lib: libresistance libcomponent libpower
 
 # Developers: add dependencies for the other tests when they are ready.
-libtests: libresistance_test libpower_test
+libtests: libresistance_test libpower_test component_test
 
 electrotest: $(FILES)
-	$(CC) $(CFLAGS) main.c -L. -lpower -lresistance -lcomponent -o electrotest
+	$(CC) $(CFLAGS) main.c -L. -lpower -lresistance -lcomponent -o electrotest -Wl,-rpath,.
 
 
 ### LIBRESISTANCE
@@ -48,15 +48,15 @@ libresistance.o: libresistance.c
 
 
 ### LIBPOWER
-libpower_test: libpower_r.c libpower_i.c libpower.so
+libpower_test: calc_power_r.c calc_power_i.c libpower.so
 	$(CC) $(CFLAGS) libpower_test.c -L. -lpower -o libpower_test
 
-libpower.so: libpower_r.c libpower_i.c libpower_r.o libpower_i.o
-	ld -shared -soname libpower.so -o libpower.so -lc libpower.o
+libpower.so:  calc_power_r.o calc_power_i.o
+	ld -shared -soname libpower.so -o libpower.so -lc calc_power_r.o calc_power_i.o
 
-libpower_r.o: libpower_r.c
+calc_power_r.o: calc_power_r.c
 
-libpower_i.o: libpower_i.c
+calc_power_i.o: calc_power_i.c
 
 
 ### LIBCOMPONENT
@@ -81,25 +81,45 @@ libresistance.a:
 
 
 clean:
-	-rm electrotest \
+	@echo "Cleaning up the mess :)"
+	-rm -f electrotest \
 	*o \
 	*a \
 	*so \
 	*_test
 
-## INSTALL
+## INSTALL use with sudo
 install: electrotest
-	@if [ -d $(INSTDIR) ]; \
+	@if [ -d /usr/local/bin ]; \
 		then \
-		cp program1 $(INSTDIR);\
-		chmod a+x $(INSTDIR)/electrotest;\
-		chmod og-w $(INSTDIR)/electrotest;\
-		echo “Installed electrotest in $(INSTDIR)“;\
+		cp electrotest /usr/local/bin;\
+		chmod a+x /usr/local/bin/electrotest;\
+		chmod og-w /usr/local/bin/electrotest;\
+		echo "Installerad i /usr/local/bin";\
 	else \
-		echo “Sorry, $(INSTDIR) does not exist”;\
-	fi
+		echo "Sorry, mappen du valde finns inte";\
+	fi;
+	@if [ -d $(LIBINSTDIR) ];\
+		then \
+		cp *.so $(LIBINSTDIR);\
+		chmod 0755 $(LIBINSTDIR)/libpower.so;\
+		chmod 0755 $(LIBINSTDIR)/libresistance.so;\
+		chmod 0755 $(LIBINSTDIR)/libcomponent.so;\
+		ldconfig;\
+		$(CC) -L$(LIBINSTDIR) -Wall -o electrotest main.c -lcomponent -lresistance -lpower;\
+		echo "Installerat i $(LIBINSTDIR)";\
+	fi;
 
-
+#install: electrotest
+#	@if [ -d $(INSTDIR) ]; \
+#		then \
+#		cp program1 $(INSTDIR);\
+#		chmod a+x $(INSTDIR)/electrotest;\
+#		chmod og-w $(INSTDIR)/electrotest;\
+#		echo “Installed electrotest in $(INSTDIR)“;\
+#	else \
+#		echo “Sorry, $(INSTDIR) does not exist”;\
+#	fi
 
 # uninstall:
 

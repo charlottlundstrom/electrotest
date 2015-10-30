@@ -1,5 +1,5 @@
 #include "libresistance.h"
-
+#include <stdio.h>
 float calc_resistance(int count, char conn, float *array) {
     
     float resistance = 0;
