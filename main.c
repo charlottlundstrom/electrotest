@@ -9,7 +9,6 @@
 int main() {
     int component_count;
     int i, antal;
-    float totRes;
     float effekt, volt;
     char circuit_type = ' ';
     float resistors[3];
@@ -49,17 +48,16 @@ int main() {
         scanf("%f", &component_array[i]);
     }
 
-    //anropa resistance-funktion
-    float resistance = calc_resistance(component_count, circuit_type, component_array);
-    printf("\nErsättningsresistans: %f Ohm\n", resistance);
+    // anropa resistance-funktion.
+    float totRes = calc_resistance(component_count, circuit_type, component_array);
+    printf("\nErsättningsresistans: %f Ohm\n", totRes);
 
-    //anropa power funktion, skicka med värde från resistance-funktionen
-    effekt = calc_power_r(volt, resistance);
+    // anropa power funktion, skicka med värde från resistance-funktionen.
+    effekt = calc_power_r(volt, totRes);
     printf("Effekten är: %f Watt\n", effekt);
 
-    totRes = resistance ;
-    printf("Ersättningsresistanser i E12-serien kopplade i serie: ");
-    
+    // anropa e_resistance funktion i libcomponent.
+    printf("Ersättningsresistanser i E12-serien kopplade i serie: ");  
     for (antal = e_resistance(totRes, &resistors[0]); antal>0; antal--)
     {
         /* avrundar till närmaste E12 och skriver ut utan decimal*/

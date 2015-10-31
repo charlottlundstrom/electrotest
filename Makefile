@@ -40,7 +40,7 @@ all: electrotest
 lib: libresistance.so libcomponent.so libpower.so
 
 # Developers: add dependencies for the other tests when they are ready.
-libtests: libresistance_test libpower_test
+libtests:  libresistance_test libpower_test
 
 electrotest: $(FILES)
 	$(CC) $(CFLAGS) main.c -L. -lpower -lresistance -lcomponent -o electrotest -Wl,-rpath,.
@@ -48,8 +48,8 @@ electrotest: $(FILES)
 
 
 ### LIBRESISTANCE
-libresistance_test: libresistance.c libresistance.so
-	$(CC) $(CFLAGS) libresistance_test.c -L. -lresistance -o libresistance_test
+libresistance_test: libresistance_test.c libresistance.c libresistance.so
+	$(CC) $(CFLAGS) libresistance_test.c -L. -lresistance -o libresistance_test -Wl,-rpath,.
 
 libresistance.so: libresistance.c
 	$(CC) $(CFLAGS) -c libresistance.c -o libresistance.o;
@@ -57,8 +57,8 @@ libresistance.so: libresistance.c
 
 
 ### LIBPOWER
-libpower_test: calc_power_r.c calc_power_i.c libpower.so
-	$(CC) $(CFLAGS) libpower_test.c -L. -lpower -o libpower_test
+libpower_test: libpower_test.c calc_power_r.c calc_power_i.c libpower.so
+	$(CC) $(CFLAGS) libpower_test.c -L. -lpower -o libpower_test -Wl,-rpath,.
 
 libpower.so:  calc_power_r.c calc_power_i.c
 	$(CC) $(CFLAGS) -c calc_power_r.c -o calc_power_r.o;
@@ -67,8 +67,8 @@ libpower.so:  calc_power_r.c calc_power_i.c
 
 
 ### LIBCOMPONENT
-libcomponent_test: libcomponent.so
-	$(CC) $(CFLAGS) libcomponent_test.c -L. -lcomponent -o libcomponent_test
+libcomponent_test: libcomponent_test.c libcomponent.so
+	$(CC) $(CFLAGS) libcomponent_test.c -L. -lcomponent -o libcomponent_test -Wl,-rpath,.
 
 libcomponent.so: libcomponent.c
 	$(CC) $(CFLAGS) -c libcomponent.c -o libcomponent.o;
