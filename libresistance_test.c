@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "libresistance.h"
 
-void main() {
+int main() {
     int count = 3;
     char conn = 'P';
     float array[] = {25, 35, 70};
@@ -12,5 +12,6 @@ void main() {
     printf("%d", resistance);
     printf("\nEnd.");
 
+    return (1);
 
 }
