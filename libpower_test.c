@@ -1,8 +1,9 @@
-
-#include<stdio.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "libpower.h"
 
-float main (void) {
+int main (void) {
 	float volt, current, resistance, effekt;
 	char *val;
 	char *pointer_m = "m";
@@ -17,11 +18,11 @@ float main (void) {
 	do {
 		fgets(input, sizeof input, stdin);
 		strtol(input, &val, 10);
-/*		printf("Du har valt: %s \n", val);		/* För felkontroll
+/*		printf("Du har valt: %s \n", val);		// För felkontroll
 		printf("s: %d\n", strcmp(pointer_s, val));
 		printf("m: %d\n", strcmp(pointer_m, val));*/
 	}
-	while (strcmp(pointer_s, val) == 1 && strcmp(pointer_m, val) == 1);		/* Avsluta loopen om m eller s anges */
+	while (strcmp(pointer_s, val) == 1 && strcmp(pointer_m, val) == 1);		/* Avsluta iteration om m eller s anges */
 
 		if (strcmp(pointer_m, val) == -1 && strcmp(pointer_s, val) == 1){	/* m blir valt */
 			printf("Ange motstånd: ");
