@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <component.h>
+#include "libcomponent.h"
+
 int antal
 float totRes
 float resistors[3];

@@ -7,7 +7,14 @@
 CC = gcc
 
 # Where to install
+# The default GNU loader, ld.so, looks for libraries in the following order:
+#   It looks in the DT_RPATH section of the executable, unless there is a DT_RUNPATH section.
+#   It looks in LD_LIBRARY_PATH. This is skipped if the executable is setuid/setgid for security reasons.
+#   It looks in the DT_RUNPATH section of the executable unless the setuid/setgid bits are set (for security reasons).
+#   It looks in the cache file /etc/ld/so/cache (disabled with the ‘-z nodeflib’ linker option).
+#   It looks in the default directories /lib then /usr/lib (disabled with the ‘-z nodeflib’ linker option).
 INSTDIR = /usr/local/bin
+LIBINSTDIR = /usr/lib
 
 # Local Libraries
 # MYLIB = 
@@ -17,18 +24,20 @@ INSTDIR = /usr/local/bin
 
 # All the source files which electrotest depends on.
 FILES = main.c libresistance.so libpower.so libcomponent.so
+
 # Options for development
 # -Wall enables all compiler's warning messages.
 # CFLAGS = -g -Wall
-CFLAGS = -Wall
+CFLAGS = -fPIC -Wall
 # Options for release
 # CFLAGS = -O -Wall –ansi
 
 
 all: electrotest
 
-##LIBRARY
-lib: libresistance libcomponent libpower
+
+## LIBRARY
+lib: libresistance.so libcomponent.so libpower.so
 
 # Developers: add dependencies for the other tests when they are ready.
 libtests: libresistance_test libpower_test component_test
@@ -37,39 +46,37 @@ electrotest: $(FILES)
 	$(CC) $(CFLAGS) main.c -L. -lpower -lresistance -lcomponent -o electrotest -Wl,-rpath,.
 
 
+
 ### LIBRESISTANCE
-libresistance_test: libresistance.c libresistance.so
-	$(CC) $(CFLAGS) libresistance_test.c -L. -lresistance -o libresistance_test
+libresistance_test: libresistance_test.c libresistance.c libresistance.so
+	$(CC) $(CFLAGS) libresistance_test.c -L. -lresistance -o libresistance_test -Wl,-rpath,.
 
-libresistance.so: libresistance.c libresistance.o
-	ld -shared -soname libresistance.so -o libresistance.so -lc libresistance.o
-
-libresistance.o: libresistance.c
+libresistance.so: libresistance.c
+	$(CC) $(CFLAGS) -c libresistance.c -o libresistance.o;
+	$(CC) -shared -o libresistance.so libresistance.o
 
 
 ### LIBPOWER
-libpower_test: calc_power_r.c calc_power_i.c libpower.so
-	$(CC) $(CFLAGS) libpower_test.c -L. -lpower -o libpower_test
+libpower_test: libpower_test.c calc_power_r.c calc_power_i.c libpower.so
+	$(CC) $(CFLAGS) libpower_test.c -L. -lpower -o libpower_test -Wl,-rpath,.
 
-libpower.so:  calc_power_r.o calc_power_i.o
-	ld -shared -soname libpower.so -o libpower.so -lc calc_power_r.o calc_power_i.o
-
-calc_power_r.o: calc_power_r.c
-
-calc_power_i.o: calc_power_i.c
+libpower.so:  calc_power_r.c calc_power_i.c
+	$(CC) $(CFLAGS) -c calc_power_r.c -o calc_power_r.o;
+	$(CC) $(CFLAGS) -c calc_power_i.c -o calc_power_i.o;
+	$(CC) -shared -o libpower.so calc_power_r.o calc_power_i.o
 
 
 ### LIBCOMPONENT
-libcomponent_test: libcomponent.so
-	$(CC) $(CFLAGS) libcomponent_test.c -L. -lcomponent -o libcomponent_test
+libcomponent_test: libcomponent_test.c libcomponent.so
+	$(CC) $(CFLAGS) libcomponent_test.c -L. -lcomponent -o libcomponent_test -Wl,-rpath,.
 
-libcomponent.so: libcomponent.o
-	ld -shared -soname libcomponent.so -o libcomponent.so -lc libcomponent.o
+libcomponent.so: libcomponent.c
+	$(CC) $(CFLAGS) -c libcomponent.c -o libcomponent.o;
+	$(CC) -shared -o libcomponent.so libcomponent.o
 
-libcomponent.o: libcomponent.c
 
 
-# For creating archives of several .c files (not needed for a small project like this)
+## Archiving - creating archives of several .c files (not needed for a small project like this)
 libcomponent.a:
 	ar rc libcomponent.a libcomponent.c
 
@@ -80,37 +87,63 @@ libresistance.a:
 	ar rc libresistance.a libresistance.c
 
 
+## Clean
 clean:
+	@echo "\nCleaning up the leftovers... \n"
 	-rm -f electrotest \
 	*o \
 	*a \
 	*so \
-	*_test
+	*_test;
+	@echo "\nDone! :)\n"
 
-## INSTALL use with sudo
+
+
+## Install - use with sudo
 install: electrotest
-	@if [ -d /usr/local/bin ]; \
+	@if [ -d $(LIBINSTDIR) ];\
 		then \
-		cp electrotest /usr/local/bin;\
-		chmod a+x /usr/local/bin/electrotest;\
-		chmod og-w /usr/local/bin/electrotest;\
-		echo "Installerad i /usr/local/bin";\
+		cp *.so $(LIBINSTDIR);\
+		chmod 0755 $(LIBINSTDIR)/libpower.so;\
+		chmod 0755 $(LIBINSTDIR)/libresistance.so;\
+		chmod 0755 $(LIBINSTDIR)/libcomponent.so;\
+		ldconfig;\
+		echo "Installerade bibliotek i $(LIBINSTDIR)";\
+	fi;
+	@if [ -d $(INSTDIR) ]; \
+		then \
+		$(CC) -L$(LIBINSTDIR) -Wall -o electrotest main.c -lcomponent -lresistance -lpower;\
+		cp electrotest $(INSTDIR);\
+		chmod a+x $(INSTDIR)/electrotest;\
+		chmod og-w $(INSTDIR)/electrotest;\
+		echo "Installerade electrotest i $(INSTDIR)";\
 	else \
-		echo "Sorry, mappen du valde finns inte";\
-	fi
+		echo "Sorry, $(INSTDIR) finns inte";\
+	fi;
 
-#install: electrotest
-#	@if [ -d $(INSTDIR) ]; \
-#		then \
-#		cp program1 $(INSTDIR);\
-#		chmod a+x $(INSTDIR)/electrotest;\
-#		chmod og-w $(INSTDIR)/electrotest;\
-#		echo “Installed electrotest in $(INSTDIR)“;\
-#	else \
-#		echo “Sorry, $(INSTDIR) does not exist”;\
-#	fi
+	make clean;
 
-# uninstall:
+## Uninstall - use with sudo
+uninstall:
+	@if [ -d $(INSTDIR) ]; \
+		then \
+		rm $(INSTDIR)/electrotest;\
+		echo "Avinstallerade huvudprogramet.";\
+	else \
+		echo "Error: $(INSTDIR) är inte en katalog.";\
+	fi;
+	@if [ -d $(LIBINSTDIR) ];\
+		then \
+		rm $(LIBINSTDIR)/libpower.so;\
+		rm $(LIBINSTDIR)/libresistance.so;\
+		rm $(LIBINSTDIR)/libcomponent.so;\
+		ldconfig;\
+		echo "Electrotest bibliotek avinstallerades.";\
+	fi;
+
+
+
+# http://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html
 
 # "all" för att bygga en exekverbar fil "program1" 
 # "clean" för att ta bort samtliga objektfiler 
